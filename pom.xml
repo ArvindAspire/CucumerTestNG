@@ -80,7 +80,7 @@
         <version>3.0.0</version>
         <configuration>
           <suiteXmlFiles>
-            <suiteXmlFile>testng.xml</suiteXmlFile>
+            <suiteXmlFile>testngCrossBrowser.xml</suiteXmlFile>
           </suiteXmlFiles>
         </configuration>
       </plugin>
