@@ -1,25 +1,21 @@
 package AppHooks;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import io.cucumber.java.After;
-import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
 import resources.ConfigReader;
 import resources.DriverFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.Scanner;
 
 public class ApplicationHooks extends DriverFactory{
 
@@ -30,10 +26,16 @@ public class ApplicationHooks extends DriverFactory{
 
  private WebDriver driver;
 
+    private ExtentReports extent;
+    private ExtentTest test;
+
  @Before(order=0)
  public void getProperty()  {
      configReader= new ConfigReader();
      properties=configReader.init_prop();
+     ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("test-output/report.html");
+     extent = new ExtentReports();
+     extent.attachReporter(htmlReporter);
  }
 
  @Before(order=1)
@@ -60,16 +62,6 @@ public class ApplicationHooks extends DriverFactory{
 
     }
 
-    @AfterStep
-    public void addScreenshotAfterFailedStep(Scenario scenario){
-
-        //validate if scenario has failed
-        if(scenario.isFailed()) {
-            final byte[] screenshot = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES);
-            scenario.attach(screenshot, "image/png", "image");
-        }
-
-    }
 
 
 }
